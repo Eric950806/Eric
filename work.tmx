@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" source="untitled.tsx"/>
+ <layer name="圖塊層 1" width="20" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzjZGBg0ARiLSrQnFDMS0UMM68eiBuoQMPM6wfiCVSgYeZlUglTO/yqgbgGiqsppEHmdQNxDxR3U0jzorGx4XlImBh5ZLfOwyJPKh/ZfdQwb6i7j9T4QXbfTCpgAOJ8bxQ=
+  </data>
+ </layer>
+ <objectgroup name="物件層 1"/>
+</map>
