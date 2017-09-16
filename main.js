@@ -1,4 +1,5 @@
 var score = 0;
+var Hp = 100;
 var money = 10000;
 var enemies = [];
 var Towers = [];
@@ -56,11 +57,12 @@ function Tower(){
 	this.shoot = function(){
 		ctx.strokeStyle = 'red';
 		ctx.lineWidth = 3;
-		ctx.stroke();
 		ctx.beginPath();
 		ctx.moveTo(this.x + 16, this.y + 16);
 		ctx.lineTo(enemies[this.aimingEnemyId].x + 16,
 					enemies[this.aimingEnemyId].y + 16);
+		ctx.stroke();
+		enemies[this.aimingEnemyId].hp = enemies[this.aimingEnemyId].hp - this.damage;
 	};
 };
 
@@ -154,24 +156,31 @@ function draw(){
 		enemies.push(newEnemy);
 
 	};
-	for (var i = 0; i < enemies.length; i++) {
-	 	if (enemies[i].hp <= 0) {
-	 		enemies.splice(i, 1);
-	 	} else {
-	 		enemies[i].move();
-	 		ctx.drawImage(enemyImg, enemies[i].x, enemies[i].y, 32, 32);
-	 	}
-	 };
-	ctx.drawImage(twImg, tower_btn.x, tower_btn.y, 64, 64);
-	if(isBuilding){
+	for (var i = 0; i < enemies.length; i++) { 
+		if (enemies[i].hp <= 0) {
+			enemies.splice(i, 1);
+			score += 50000;
+			money += 5;
+		}else{
+			enemies[i].move(); //執行move
+			ctx.drawImage(enemyImg, enemies[i].x, enemies[i].y); //畫出來
+		}
+		
+	}
+		
+		if(isBuilding){
 		ctx.drawImage(toImg, cursor.x -16, cursor.y -16, 32, 32);
-	};
+		};
+		ctx.drawImage(twImg, 640-96, 480-288, 64, 64);
+
 	for (var j = 0; j < Towers.length; j++) {
 		ctx.drawImage(toImg, Towers[j].x, Towers[j].y, 32, 32);
 		Towers[j].seachEnemy();
 		if (Towers[j].aimingEnemyId != null) {
 	 		ctx.drawImage(coImg, enemies[Towers[j].aimingEnemyId].x, enemies[Towers[j].aimingEnemyId].y);
-	 	};
+	 
+	 	}
+
 	}
 
 	ctx.fillText("HP:" + hp, 100, 100);
@@ -179,9 +188,14 @@ function draw(){
 	ctx.fillStyle = "white";
 	ctx.fillText("Score: " + score, 100, 132);
 	ctx.fillText("Money: " + money, 196, 100);
+	if(hp <= 0){
+	 	clearInterval(IntervalID);
+	}
 };
 
-setInterval(draw, 1000/FPS);
+
+var intervalID = setInterval(draw, 1000/FPS);
+
 
 $("#game-canvas").on("mousemove", function(event){
 	console.log("x:"+ event.offsetX+ ",y:"+ event.offsetY);
@@ -191,7 +205,7 @@ $("#game-canvas").on("mousemove", function(event){
 
 
 $("#game-canvas").on("click", function(){
-   if(cursor.x > 640-96 && cursor.y > 192){
+   if(cursor.x > 640-96 && cursor.x < 640-32 && cursor.y > 192 && cursor.y < 192 + 64){
      isBuilding = true;
    }else{
    	if(isBuilding){
